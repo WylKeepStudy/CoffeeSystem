@@ -141,7 +141,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1037, 934);
             this.panel2.TabIndex = 10;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // NowBtn
             // 
@@ -216,7 +215,6 @@
             this.AromaIntensity.Name = "AromaIntensity";
             this.AromaIntensity.Size = new System.Drawing.Size(99, 35);
             this.AromaIntensity.TabIndex = 38;
-            this.AromaIntensity.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -319,7 +317,6 @@
             this.CoffeeID.Name = "CoffeeID";
             this.CoffeeID.Size = new System.Drawing.Size(96, 39);
             this.CoffeeID.TabIndex = 24;
-            this.CoffeeID.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // dataGridView1
             // 

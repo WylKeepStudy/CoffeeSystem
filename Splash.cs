@@ -12,37 +12,22 @@ namespace _316
 {
     public partial class Splash : Form
     {
+        //构造函数
         public Splash()
         {
-            InitializeComponent();
+            InitializeComponent(); //自动生成的方法，用于初始化窗体上的控件（如按钮、标签、进度条等）
         }
 
-
-
+        //加载窗体时启动定时器
         private void Form1_Load(object sender, EventArgs e)
         {
             timer1.Start();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        //进度条初始值
         int startpos = 0; 
 
-
-        //加载进度条 完成后窗口切换
+        // 定时器事件
         private void timer1_Tick(object sender, EventArgs e)
         {
             startpos += 5;
@@ -58,9 +43,5 @@ namespace _316
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

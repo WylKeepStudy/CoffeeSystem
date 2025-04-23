@@ -16,26 +16,21 @@ namespace _316
 {
     public partial class TastingRecord : Form
     {
-
-
         //构造函数
         public TastingRecord()
         {
             InitializeComponent();
         }
 
-
-        // 在窗体类中添加字段  打印报表用
+        // 添加字段  打印报表用
         private PrintDocument printDocument = new PrintDocument();
         private DataTable printData = new DataTable();
-
 
         //退出键
         private void label3_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
 
         //切换成咖啡信息窗体
         private void button1_Click(object sender, EventArgs e)
@@ -44,15 +39,11 @@ namespace _316
             ci.Show();
             this.Hide();
         }
-
-        
+       
         //获取连接
         private string connectionString = @"Data Source=吴宇伦的笔记本;Initial Catalog=CoffeeSystem;Integrated Security=True;TrustServerCertificate=True";
 
-
-
-
-        //信息初始加载
+        //窗体加载 初始化数据
         private void TastingRecord_Load(object sender, EventArgs e)
         {
             // TODO: 这行代码将数据加载到表“coffeeSystemDataSet1.TASTING_RECORD”中。您可以根据需要移动或移除它。
@@ -60,22 +51,6 @@ namespace _316
 
 
         }
-
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-
-
 
         //刷新键
         private void refresh_Click(object sender, EventArgs e)
@@ -172,7 +147,6 @@ namespace _316
             Score.Clear();
         }
 
-
         //添加记录
         private void InsertBtn_Click(object sender, EventArgs e)
         {
@@ -259,10 +233,8 @@ namespace _316
             }
         }
 
-
         // 当前选中的记录ID
         private int currentRecordId = -1;
-
         // 点击行后自动填入对应内容并记录ID
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -328,7 +300,6 @@ namespace _316
             }
         }
 
-
         //删除记录
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
@@ -372,7 +343,6 @@ namespace _316
                 MessageBox.Show($"删除记录失败: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         //更新记录
         private void UpdateBtn_Click(object sender, EventArgs e)
@@ -477,7 +447,6 @@ namespace _316
                 MessageBox.Show($"修改记录失败: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         //条件查询
         private void SelectBtn_Click(object sender, EventArgs e)
@@ -620,9 +589,7 @@ namespace _316
             }
         }
 
-
-
-        // 打印按钮点击事件 - 改为显示预览
+        // 打印按钮
         private void PrintBtn_Click(object sender, EventArgs e)
         {
             try
@@ -648,11 +615,12 @@ namespace _316
             }
         }
 
-        // 打印页面事件处理（与之前相同）
+        // 打印页面事件处理
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             // 获取打印图形对象
             Graphics g = e.Graphics;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 
             // 设置字体
             Font titleFont = new Font("宋体", 16, FontStyle.Bold);
@@ -662,8 +630,9 @@ namespace _316
             // 设置边距和行高
             int leftMargin = 50;
             int topMargin = 50;
-            int lineHeight = 20;
-            int cellPadding = 5; // 单元格内边距
+            int lineHeight = 20;  // 基础行高
+            int cellPadding = 5;  // 单元格内边距
+            int headerHeight = lineHeight + 5; // 表头比内容行稍高
 
             // 打印标题
             string title = "咖啡品鉴记录报表";
@@ -674,13 +643,139 @@ namespace _316
             // 打印日期
             string printDate = "打印日期: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             g.DrawString(printDate, contentFont, Brushes.Black,
-                leftMargin, topMargin + lineHeight * 2);
+                leftMargin, topMargin + (int)titleSize.Height + 10);
 
             // 获取数据源
             DataTable dt = GetDataTableFromDataSource();
 
             // 计算每列所需宽度
+            int[] columnWidths = CalculateColumnWidths(g, dt, headerFont, contentFont, leftMargin);
+
+            // 计算总宽度
+            int totalWidth = columnWidths.Sum();
+
+            // 如果总宽度超过页面宽度，按比例缩小所有列
+            int availableWidth = e.PageBounds.Width - leftMargin * 2;
+            if (totalWidth > availableWidth)
+            {
+                float scaleFactor = (float)availableWidth / totalWidth;
+                for (int i = 0; i < columnWidths.Length; i++)
+                {
+                    columnWidths[i] = (int)(columnWidths[i] * scaleFactor);
+                }
+            }
+
+            // 打印表头 - 位置调整（增加与日期的间距）
+            int currentY = topMargin + (int)titleSize.Height + 30; // 增加间距
+            int currentX = leftMargin;
+
+            // 绘制表头背景
+            g.FillRectangle(Brushes.LightGray, leftMargin, currentY, totalWidth, headerHeight);
+
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                string columnName = GetDisplayColumnName(dt.Columns[i].ColumnName);
+
+                // 绘制列名（居中显示）
+                float textWidth = g.MeasureString(columnName, headerFont).Width;
+                float textX = currentX + (columnWidths[i] - textWidth) / 2;
+                float textY = currentY + (headerHeight - headerFont.Height) / 2; // 垂直居中
+
+                g.DrawString(columnName, headerFont, Brushes.Black, textX, textY);
+
+                // 绘制列边框
+                g.DrawRectangle(Pens.Black, currentX, currentY, columnWidths[i], headerHeight);
+
+                currentX += columnWidths[i];
+            }
+
+            // 打印数据行 - 确保与表头有足够间距
+            currentY += headerHeight + 2; // 增加2像素的间距
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    // 检查是否超出页面范围
+                    if (currentY > e.PageBounds.Height - topMargin)
+                    {
+                        e.HasMorePages = true;
+                        return;
+                    }
+
+                    currentX = leftMargin;
+
+                    // 计算本行需要的实际高度（处理多行文本）
+                    int actualRowHeight = CalculateRowHeight(g, row, dt, contentFont, columnWidths, cellPadding, lineHeight);
+
+                    // 打印每行数据
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        string cellValue = row[i]?.ToString() ?? "";
+
+                        // 创建文本区域
+                        RectangleF textRect = new RectangleF(
+                            currentX + cellPadding,
+                            currentY,
+                            columnWidths[i] - cellPadding * 2,
+                            actualRowHeight);
+
+                        // 绘制单元格内容（支持自动换行）
+                        g.DrawString(cellValue, contentFont, Brushes.Black, textRect);
+
+                        // 绘制单元格边框
+                        g.DrawRectangle(Pens.Black, currentX, currentY, columnWidths[i], actualRowHeight);
+
+                        currentX += columnWidths[i];
+                    }
+
+                    currentY += actualRowHeight;
+                }
+            }
+            else
+            {
+                g.DrawString("没有可打印的数据", contentFont, Brushes.Black, leftMargin, currentY);
+            }
+
+            // 打印页脚
+            string footer = "---- 结束 ----";
+            g.DrawString(footer, contentFont, Brushes.Black,
+                (e.PageBounds.Width - g.MeasureString(footer, contentFont).Width) / 2,
+                e.PageBounds.Height - topMargin);
+
+            e.HasMorePages = false;
+        }
+
+        // 计算行高（处理多行文本）
+        private int CalculateRowHeight(Graphics g, DataRow row, DataTable dt, Font font, int[] columnWidths, int padding, int baseLineHeight)
+        {
+            int maxLines = 1;
+
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                string cellValue = row[i]?.ToString() ?? "";
+                float textWidth = g.MeasureString(cellValue, font).Width;
+                float columnWidth = columnWidths[i] - padding * 2;
+
+                if (textWidth > columnWidth)
+                {
+                    // 计算需要的行数
+                    int lines = (int)Math.Ceiling(textWidth / columnWidth);
+                    if (lines > maxLines)
+                    {
+                        maxLines = lines;
+                    }
+                }
+            }
+
+            return baseLineHeight * maxLines;
+        }
+
+        // 计算列宽
+        private int[] CalculateColumnWidths(Graphics g, DataTable dt, Font headerFont, Font contentFont, int leftMargin)
+        {
             int[] columnWidths = new int[dt.Columns.Count];
+
             for (int i = 0; i < dt.Columns.Count; i++)
             {
                 // 测量列名宽度
@@ -698,103 +793,10 @@ namespace _316
                 }
 
                 // 取列名和内容中较大的宽度，加上内边距
-                columnWidths[i] = (int)Math.Max(headerWidth, maxDataWidth) + cellPadding * 2;
+                columnWidths[i] = (int)Math.Max(headerWidth, maxDataWidth) + 10; // 增加额外内边距
             }
 
-            // 计算总宽度
-            int totalWidth = columnWidths.Sum();
-
-            // 如果总宽度超过页面宽度，按比例缩小所有列
-            int availableWidth = e.PageBounds.Width - leftMargin * 2;
-            if (totalWidth > availableWidth)
-            {
-                float scaleFactor = (float)availableWidth / totalWidth;
-                for (int i = 0; i < columnWidths.Length; i++)
-                {
-                    columnWidths[i] = (int)(columnWidths[i] * scaleFactor);
-                }
-            }
-
-            // 打印表头
-            int currentY = topMargin + lineHeight * 4;
-            int currentX = leftMargin;
-
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                string columnName = GetDisplayColumnName(dt.Columns[i].ColumnName);
-
-                // 绘制列名（居中显示）
-                float textWidth = g.MeasureString(columnName, headerFont).Width;
-                float textX = currentX + (columnWidths[i] - textWidth) / 2;
-
-                g.DrawString(columnName, headerFont, Brushes.Black, textX, currentY);
-
-                // 绘制列边框
-                g.DrawRectangle(Pens.Black, currentX, currentY, columnWidths[i], lineHeight);
-
-                currentX += columnWidths[i];
-            }
-
-            // 打印数据行
-            currentY += lineHeight;
-
-            if (dt != null && dt.Rows.Count > 0)
-            {
-                foreach (DataRow row in dt.Rows)
-                {
-                    // 检查是否超出页面范围
-                    if (currentY > e.PageBounds.Height - topMargin)
-                    {
-                        e.HasMorePages = true;
-                        return;
-                    }
-
-                    currentX = leftMargin;
-
-                    // 打印每行数据
-                    for (int i = 0; i < dt.Columns.Count; i++)
-                    {
-                        string cellValue = row[i]?.ToString() ?? "";
-
-                        // 计算文本宽度
-                        float textWidth = g.MeasureString(cellValue, contentFont).Width;
-
-                        // 如果文本宽度超过列宽，则截断并添加省略号
-                        if (textWidth > columnWidths[i] - cellPadding * 2)
-                        {
-                            while (g.MeasureString(cellValue + "...", contentFont).Width > columnWidths[i] - cellPadding * 2
-                                   && cellValue.Length > 0)
-                            {
-                                cellValue = cellValue.Substring(0, cellValue.Length - 1);
-                            }
-                            cellValue += "...";
-                        }
-
-                        // 绘制单元格内容（左对齐）
-                        g.DrawString(cellValue, contentFont, Brushes.Black,
-                            currentX + cellPadding, currentY);
-
-                        // 绘制单元格边框
-                        g.DrawRectangle(Pens.Black, currentX, currentY, columnWidths[i], lineHeight);
-
-                        currentX += columnWidths[i];
-                    }
-
-                    currentY += lineHeight;
-                }
-            }
-            else
-            {
-                g.DrawString("没有可打印的数据", contentFont, Brushes.Black, leftMargin, currentY);
-            }
-
-            // 打印页脚
-            string footer = "---- 结束 ----";
-            g.DrawString(footer, contentFont, Brushes.Black,
-                (e.PageBounds.Width - g.MeasureString(footer, contentFont).Width) / 2,
-                e.PageBounds.Height - topMargin);
-
-            e.HasMorePages = false;
+            return columnWidths;
         }
 
         // 辅助方法：获取显示用的列名
@@ -876,7 +878,6 @@ namespace _316
             }
         }
 
-
         //切换成统计窗体
         private void StaticBtn_Click(object sender, EventArgs e)
         {
@@ -885,15 +886,11 @@ namespace _316
             this.Hide();
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+        // 设置当前时间，格式为 SQL Server 接受的 datetime 格式
         private void NowBtn_Click(object sender, EventArgs e)
         {
-            // 设置当前时间，格式为 SQL Server 接受的 datetime 格式
             TastingDate.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
+
     }
 }

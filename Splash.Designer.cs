@@ -55,7 +55,6 @@
             this.Title.Size = new System.Drawing.Size(374, 50);
             this.Title.TabIndex = 0;
             this.Title.Text = "咖啡品鉴记录系统";
-            this.Title.Click += new System.EventHandler(this.label1_Click);
             // 
             // progressBar1
             // 
@@ -78,7 +77,6 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 18);
             this.label1.TabIndex = 3;
-            this.label1.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // label2
             // 
@@ -91,7 +89,6 @@
             this.label2.Size = new System.Drawing.Size(108, 27);
             this.label2.TabIndex = 4;
             this.label2.Text = "加载中...";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // pictureBox1
             // 
@@ -102,7 +99,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // timer1
             // 

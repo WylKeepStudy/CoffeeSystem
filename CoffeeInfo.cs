@@ -22,21 +22,11 @@ namespace _316
             InitializeComponent();
         }
 
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-
         //退出键
         private void label3_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
 
         //获取连接
         SqlConnection connection = new SqlConnection(@"Data Source=吴宇伦的笔记本;Initial Catalog=CoffeeSystem;Integrated Security=True;TrustServerCertificate=True");
@@ -109,8 +99,7 @@ namespace _316
             }
 
 
-        }
-
+        }  
 
         //清除框内内容
         private void ClearInputs()
@@ -123,8 +112,7 @@ namespace _316
             Notes.Clear();
         }
 
-
-        //数据展示初始化（一次性）
+        //窗体加载时进行数据展示初始化
         private void CoffeeInfo_Load(object sender, EventArgs e)
         {
             // TODO: 这行代码将数据加载到表“coffeeSystemDataSet.COFFEE_INFO”中。您可以根据需要移动或移除它。
@@ -134,8 +122,7 @@ namespace _316
 
         }
 
-
-        //查询
+        //条件查询
         private void ReadBtn_Click(object sender, EventArgs e)
         {
             try
@@ -150,6 +137,7 @@ namespace _316
             ISNULL(Notes, '') AS notesDataGridViewTextBoxColumn
             FROM COFFEE_INFO 
             WHERE 1=1"; // 初始条件永远为真
+                        //使用 AS 为列设置别名（与 DataGridView 列名匹配 ）
 
                 // 2. 声明并初始化参数集合
                 List<SqlParameter> parameters = new List<SqlParameter>();
@@ -244,7 +232,6 @@ namespace _316
             }
         }
 
-
         //刷新数据展示
         private void refresh_Click(object sender, EventArgs e)
         {
@@ -260,14 +247,14 @@ namespace _316
 
                     // 构建基础SQL查询（不包含序号列）
                     string sql = @"SELECT 
-                CoffeeID,
-                Variety AS varietyDataGridViewTextBoxColumn,
-                RoastLevel AS roastLevelDataGridViewTextBoxColumn,
-                Origin AS originDataGridViewTextBoxColumn,
-                CONVERT(varchar, RoastDate, 23) AS roastDateDataGridViewTextBoxColumn,
-                ISNULL(Notes, '') AS notesDataGridViewTextBoxColumn
-            FROM COFFEE_INFO 
-            ORDER BY CoffeeID";  // 按CoffeeID排序
+                    CoffeeID,
+                    Variety AS varietyDataGridViewTextBoxColumn,
+                    RoastLevel AS roastLevelDataGridViewTextBoxColumn,
+                    Origin AS originDataGridViewTextBoxColumn,
+                    CONVERT(varchar, RoastDate, 23) AS roastDateDataGridViewTextBoxColumn,
+                    ISNULL(Notes, '') AS notesDataGridViewTextBoxColumn
+                    FROM COFFEE_INFO 
+                    ORDER BY CoffeeID";  // 按CoffeeID排序
 
                     SqlCommand command = new SqlCommand(sql, conn);
 
@@ -320,7 +307,6 @@ namespace _316
             }
         }
 
-
         //点击行后自动填入对应内容
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -333,6 +319,8 @@ namespace _316
                     DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
                     // 使用列名而非索引（更安全，避免列顺序变化导致错误）
+                    //?. 安全导航操作符：防止 Value 为 null 时抛出异常。
+                    //?? 空值合并操作符：如果值为 null，则赋空字符串 ""。
                     Variety.Text = row.Cells["varietyDataGridViewTextBoxColumn"].Value?.ToString() ?? "";
 
                     // 设置烘焙程度下拉框（确保值存在）
@@ -367,7 +355,6 @@ namespace _316
             }
         }
 
-
         // 删除所选记录
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
@@ -378,7 +365,7 @@ namespace _316
                 return;
             }
 
-            // 获取选中行的第一行
+            // 获取选中行对象
             DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
 
             // 检查CoffeeID列是否存在且值不为空
@@ -428,8 +415,6 @@ namespace _316
                 MessageBox.Show($"删除失败: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
 
         // 修改所选记录
         private void UpdateBtn_Click(object sender, EventArgs e)
@@ -534,7 +519,6 @@ namespace _316
             }
         }
 
-
         // 切换到品鉴页面
         private void button2_Click(object sender, EventArgs e)
         {
@@ -542,12 +526,6 @@ namespace _316
             tr.Show();
             this.Hide();
         }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
 
         //切换到统计窗体
         private void StatisticsBtn_Click(object sender, EventArgs e)
@@ -557,10 +535,11 @@ namespace _316
             this.Hide();
         }
 
+        // 设置当前日期，格式为 SQL Server 接受的 DATE 格式 (yyyy-MM-dd)
         private void NowBtn_Click(object sender, EventArgs e)
         {
-            // 设置当前日期，格式为 SQL Server 接受的 DATE 格式 (yyyy-MM-dd)
             RoastDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
         }
+
     }
 }

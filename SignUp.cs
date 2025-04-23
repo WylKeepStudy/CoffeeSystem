@@ -13,21 +13,11 @@ namespace _316
 {
     public partial class SignUp : Form
     {
+        //构造器
         public SignUp()
         {
             InitializeComponent();
         }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PasswordText_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
 
         //确定按键
         private void ConfirmBtn_Click(object sender, EventArgs e)
@@ -124,20 +114,11 @@ namespace _316
             }
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
         //退出键
         private void label6_Click(object sender, EventArgs e)
         {
             this.Hide();
         }
+
     }
 }

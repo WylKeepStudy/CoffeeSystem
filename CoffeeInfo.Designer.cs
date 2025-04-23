@@ -103,7 +103,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1037, 928);
             this.panel2.TabIndex = 4;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // refresh
             // 
@@ -128,7 +127,6 @@
             this.RoastLevel.Name = "RoastLevel";
             this.RoastLevel.Size = new System.Drawing.Size(194, 35);
             this.RoastLevel.TabIndex = 24;
-            this.RoastLevel.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // dataGridView1
             // 

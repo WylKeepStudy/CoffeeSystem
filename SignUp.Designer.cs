@@ -31,18 +31,18 @@
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ConfirmBtn = new System.Windows.Forms.Button();
             this.SignUpBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.LoginBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.ConfirmBtn = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -87,7 +87,48 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(467, 391);
             this.panel2.TabIndex = 10;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("华文琥珀", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(413, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(42, 45);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "X";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // txtConfirmPassword
+            // 
+            this.txtConfirmPassword.Font = new System.Drawing.Font("华文中宋", 16F);
+            this.txtConfirmPassword.Location = new System.Drawing.Point(193, 212);
+            this.txtConfirmPassword.Name = "txtConfirmPassword";
+            this.txtConfirmPassword.Size = new System.Drawing.Size(210, 50);
+            this.txtConfirmPassword.TabIndex = 11;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("华文中宋", 16F);
+            this.label5.Location = new System.Drawing.Point(44, 215);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(143, 36);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "确认密码";
+            // 
+            // ConfirmBtn
+            // 
+            this.ConfirmBtn.BackColor = System.Drawing.Color.DarkSalmon;
+            this.ConfirmBtn.Font = new System.Drawing.Font("华文中宋", 16F);
+            this.ConfirmBtn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.ConfirmBtn.Location = new System.Drawing.Point(130, 291);
+            this.ConfirmBtn.Name = "ConfirmBtn";
+            this.ConfirmBtn.Size = new System.Drawing.Size(187, 50);
+            this.ConfirmBtn.TabIndex = 9;
+            this.ConfirmBtn.Text = "确定";
+            this.ConfirmBtn.UseVisualStyleBackColor = false;
+            this.ConfirmBtn.Click += new System.EventHandler(this.ConfirmBtn_Click);
             // 
             // SignUpBtn
             // 
@@ -142,7 +183,14 @@
             this.label4.Size = new System.Drawing.Size(111, 36);
             this.label4.TabIndex = 4;
             this.label4.Text = "用户名";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Font = new System.Drawing.Font("华文中宋", 16F);
+            this.txtPassword.Location = new System.Drawing.Point(193, 147);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(210, 50);
+            this.txtPassword.TabIndex = 3;
             // 
             // txtUsername
             // 
@@ -161,58 +209,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Font = new System.Drawing.Font("华文中宋", 16F);
-            this.txtPassword.Location = new System.Drawing.Point(193, 147);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(210, 50);
-            this.txtPassword.TabIndex = 3;
-            this.txtPassword.TextChanged += new System.EventHandler(this.PasswordText_TextChanged);
-            // 
-            // ConfirmBtn
-            // 
-            this.ConfirmBtn.BackColor = System.Drawing.Color.DarkSalmon;
-            this.ConfirmBtn.Font = new System.Drawing.Font("华文中宋", 16F);
-            this.ConfirmBtn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ConfirmBtn.Location = new System.Drawing.Point(130, 291);
-            this.ConfirmBtn.Name = "ConfirmBtn";
-            this.ConfirmBtn.Size = new System.Drawing.Size(187, 50);
-            this.ConfirmBtn.TabIndex = 9;
-            this.ConfirmBtn.Text = "确定";
-            this.ConfirmBtn.UseVisualStyleBackColor = false;
-            this.ConfirmBtn.Click += new System.EventHandler(this.ConfirmBtn_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("华文中宋", 16F);
-            this.label5.Location = new System.Drawing.Point(44, 215);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(143, 36);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "确认密码";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
-            // txtConfirmPassword
-            // 
-            this.txtConfirmPassword.Font = new System.Drawing.Font("华文中宋", 16F);
-            this.txtConfirmPassword.Location = new System.Drawing.Point(193, 212);
-            this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.Size = new System.Drawing.Size(210, 50);
-            this.txtConfirmPassword.TabIndex = 11;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("华文琥珀", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(413, 9);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(42, 45);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "X";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // SignUp
             // 

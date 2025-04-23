@@ -13,12 +13,13 @@ namespace _316
 {
     public partial class Statistics : Form
     {
+
+        // 窗体加载时加载所有咖啡品种
         public Statistics()
         {
             InitializeComponent();
             LoadCoffeeVarieties();
         }
-
 
         // 加载所有咖啡品种到ComboBox
         private void LoadCoffeeVarieties()
@@ -80,34 +81,34 @@ namespace _316
 
                     // 查询品鉴次数
                     string countQuery = @"
-                SELECT COUNT(*) AS TastingCount
-                FROM TASTING_RECORD tr
-                JOIN COFFEE_INFO ci ON tr.CoffeeID = ci.CoffeeID
-                WHERE ci.Variety = @Variety";
+                    SELECT COUNT(*) AS TastingCount
+                    FROM TASTING_RECORD tr
+                    JOIN COFFEE_INFO ci ON tr.CoffeeID = ci.CoffeeID
+                    WHERE ci.Variety = @Variety";
 
                     using (SqlCommand countCommand = new SqlCommand(countQuery, connection))
                     {
                         countCommand.Parameters.AddWithValue("@Variety", variety);
                         int tastingCount = (int)countCommand.ExecuteScalar();
-                        TastingTimes.Text = tastingCount.ToString();
+                        TastingTimes.Text = tastingCount.ToString();// 更新统计次数文本框
                     }
 
                     // 查询详细数据
                     string detailQuery = @"
-                SELECT 
-                    ci.Variety AS 咖啡品种,
-                    ci.RoastLevel AS 烘焙程度,
-                    ci.Origin AS 产地,
-                    tr.TastingDate AS 品鉴日期,
-                    tr.AromaIntensity AS 香气强度,
-                    tr.AcidityLevel AS 酸度,
-                    tr.BodyFeel AS 口感,
-                    tr.FlavorNotes AS 风味描述,
-                    tr.Score AS 评分
-                FROM TASTING_RECORD tr
-                JOIN COFFEE_INFO ci ON tr.CoffeeID = ci.CoffeeID
-                WHERE ci.Variety = @Variety
-                ORDER BY tr.TastingDate DESC";
+                    SELECT 
+                        ci.Variety AS 咖啡品种,
+                        ci.RoastLevel AS 烘焙程度,
+                        ci.Origin AS 产地,
+                        tr.TastingDate AS 品鉴日期,
+                        tr.AromaIntensity AS 香气强度,
+                        tr.AcidityLevel AS 酸度,
+                        tr.BodyFeel AS 口感,
+                        tr.FlavorNotes AS 风味描述,
+                        tr.Score AS 评分
+                    FROM TASTING_RECORD tr
+                    JOIN COFFEE_INFO ci ON tr.CoffeeID = ci.CoffeeID
+                    WHERE ci.Variety = @Variety
+                    ORDER BY tr.TastingDate DESC";
 
                     using (SqlCommand detailCommand = new SqlCommand(detailQuery, connection))
                     {
@@ -140,7 +141,6 @@ namespace _316
             }
         }
 
-
         //切换咖啡信息窗体
         private void button1_Click(object sender, EventArgs e)
         {
@@ -148,7 +148,6 @@ namespace _316
             ci.Show();
             this.Hide();
         }
-
 
         //切换品鉴记录窗体
         private void button2_Click(object sender, EventArgs e)
@@ -158,16 +157,12 @@ namespace _316
             this.Hide();
         }
 
-
         //退出键
         private void label3_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void Statistics_Load(object sender, EventArgs e)
-        {
 
-        }
     }
 }
